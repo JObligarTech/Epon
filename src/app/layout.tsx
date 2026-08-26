@@ -32,7 +32,14 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+    // ThemeScript stamps data-theme on this element before React hydrates, so
+    // the server HTML and the live DOM differ here by design. Scoped to <html>
+    // itself, so a genuine mismatch anywhere inside still reports.
+    <html
+      lang="en"
+      className={`${sans.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <ThemeScript />
       </head>

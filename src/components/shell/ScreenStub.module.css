@@ -1,0 +1,20 @@
+.stub {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 46ch;
+  padding: 56px 0;
+}
+
+.title {
+  font-size: 27px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.description {
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.6;
+}

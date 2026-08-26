@@ -1,0 +1,115 @@
+.skip {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: var(--r-md);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: top 0.2s var(--ease);
+}
+
+.skip:focus-visible {
+  top: 12px;
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  min-height: 100dvh;
+}
+
+@media (max-width: 900px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.page {
+  flex: 1;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+.page:focus {
+  outline: none;
+}
+
+@media (max-width: 900px) {
+  .page {
+    padding: 20px 18px 96px;
+  }
+}
+
+.sheetNav {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  list-style: none;
+  padding: 0;
+}
+
+.sheetLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  color: var(--ink-2);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+a.sheetLink:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.sheetTrailing {
+  margin-left: auto;
+}
+
+.sheetPlanned {
+  color: var(--ink-3);
+  cursor: default;
+}
+
+.sheetDivider {
+  height: 1px;
+  margin: 16px 12px 12px;
+  border: 0;
+  background: var(--line);
+}
+
+.connectIntro {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.connectIntro p {
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.connectGlyph {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}

@@ -50,6 +50,13 @@ a {
   text-decoration: none;
 }
 
+/* The UA rule for [hidden] is display:none at the lowest specificity, so any
+   author display value silently defeats it. Layout classes are everywhere in
+   this codebase, so state this once here rather than per component. */
+[hidden] {
+  display: none !important;
+}
+
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;

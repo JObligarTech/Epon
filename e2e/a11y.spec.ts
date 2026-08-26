@@ -11,7 +11,11 @@ import { expect, test, type Page } from "@playwright/test";
  */
 
 const ROUTES = [
-  { path: "/", name: "placeholder" },
+  { path: "/", name: "home" },
+  { path: "/accounts", name: "accounts" },
+  { path: "/transactions", name: "transactions" },
+  { path: "/budgeting", name: "budgeting" },
+  { path: "/settings", name: "settings" },
   { path: "/styleguide", name: "styleguide" },
 ];
 
@@ -58,6 +62,26 @@ for (const route of ROUTES) {
   }
 }
 
+/**
+ * Nothing above reads the console, so a page can be perfectly accessible and
+ * still be logging errors — hydration mismatches especially, which are silent
+ * to axe but mean React threw away the server HTML for that subtree.
+ */
+for (const route of ROUTES) {
+  test(`${route.name} loads without console errors`, async ({ page }) => {
+    const problems: string[] = [];
+    page.on("console", (message) => {
+      if (message.type() === "error") problems.push(message.text());
+    });
+    page.on("pageerror", (error) => problems.push(String(error)));
+
+    await gotoWithTheme(page, route.path, "dark");
+    await page.waitForLoadState("networkidle");
+
+    expect(problems.join("\n")).toBe("");
+  });
+}
+
 test("the theme choice survives a reload without flashing the other theme", async ({ page }) => {
   await page.goto("/styleguide");
   await page.getByRole("radio", { name: "Dark" }).click();
@@ -81,4 +105,52 @@ test("the segmented control is fully keyboard operable", async ({ page }) => {
     "true",
   );
   await expect(status.getByRole("radio", { name: "Pending" })).toBeFocused();
+});
+
+test("the skip link is the first thing the keyboard reaches", async ({ page }) => {
+  await page.goto("/");
+  await page.keyboard.press("Tab");
+
+  const skip = page.getByRole("link", { name: "Skip to content" });
+  await expect(skip).toBeFocused();
+  await expect(skip).toBeVisible();
+
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#main$/);
+});
+
+test("navigation moves between sections and marks the current one", async ({ page }) => {
+  await page.goto("/");
+  const nav = page.getByRole("navigation", { name: "Main" });
+
+  await nav.getByRole("link", { name: /Transactions/ }).click();
+  await expect(page).toHaveURL(/\/transactions$/);
+  await expect(nav.getByRole("link", { name: /Transactions/ })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  await expect(nav.getByRole("link", { name: /Home/ })).not.toHaveAttribute("aria-current", "page");
+});
+
+test("only one navigation is exposed at a time", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/");
+  await expect(page.getByRole("navigation", { name: "Main" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Sections" })).toBeHidden();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByRole("navigation", { name: "Main" })).toBeHidden();
+  await expect(page.getByRole("navigation", { name: "Sections" })).toBeVisible();
+});
+
+test("the mobile More sheet reaches the sections the rail holds", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  await page.getByRole("navigation", { name: "Sections" }).getByRole("button", { name: /More/ }).click();
+
+  const sheet = page.getByRole("dialog", { name: "More" });
+  await expect(sheet).toBeVisible();
+  await sheet.getByRole("link", { name: /Settings/ }).click();
+  await expect(page).toHaveURL(/\/settings$/);
 });

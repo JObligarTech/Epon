@@ -1,0 +1,72 @@
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 30px;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--ground) 82%, transparent);
+  backdrop-filter: saturate(1.6) blur(14px);
+  -webkit-backdrop-filter: saturate(1.6) blur(14px);
+}
+
+@media (max-width: 900px) {
+  .bar {
+    padding: 12px 18px;
+  }
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.mobileBrand {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .mobileBrand {
+    display: inline-flex;
+  }
+
+  .title {
+    /* Still announced, just not drawn — the brand occupies this slot. */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+.actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.connect {
+  padding: 8px 13px;
+  font-size: 13px;
+}
+
+@media (max-width: 620px) {
+  .connectLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .connect {
+    padding: 8px 10px;
+  }
+}

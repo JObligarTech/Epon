@@ -1,0 +1,34 @@
+/* Minimal ground only. The real token system arrives in the next commit. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  background: #edeeea;
+  color: #0e1512;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0c110f;
+    color: #e9eeea;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

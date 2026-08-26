@@ -1,0 +1,142 @@
+/* ============================================================================
+   E-PON design tokens
+
+   Three scopes, deliberately:
+     :root                          complete light palette
+     @media (prefers-color-scheme)  OS dark, guarded so an explicit light
+                                    choice still wins
+     :root[data-theme="dark"]       the in-app toggle, wins both ways
+
+   Components must read these tokens and never declare a colour only inside
+   a media or [data-theme] block — a colour defined that way never applies
+   in the default un-stamped state and renders one theme on the other's ground.
+
+   The --cat-* and --ins-* values are validated data palettes. Worst adjacent
+   pair, categories: CVD dE 18.1 light / 15.0 dark, normal-vision 19.1 / 17.7.
+   Institutions: CVD 16.2 / 14.3, normal-vision 18.3 / 15.0. The -2 ramp step
+   separates two accounts at one institution (dE ~16, contrast >= 3:1).
+   Do not hand-tune these; re-validate if they ever need to change.
+   ============================================================================ */
+
+:root{
+  --ground:#EDEEEA;
+  --surface:#FFFFFF;
+  --surface-2:#F6F7F4;
+  --surface-3:#EFF1ED;
+  --ink:#0E1512;
+  --ink-2:#4A544E;
+  --ink-3:#7B857E;
+  --line:rgba(14,21,18,.09);
+  --line-strong:rgba(14,21,18,.16);
+  --accent:#0F4D3A;
+  --accent-ink:#0F4D3A;
+  --accent-soft:#E3EDE7;
+  --accent-glow:rgba(15,77,58,.10);
+  --debt:#7A3552;
+  --debt-soft:#F5E7ED;
+  --warn:#8A6A16;
+  --warn-soft:#F6EFDC;
+  --alert:#9C3328;
+  --engrave:rgba(15,77,58,.055);
+  --shadow-sm:0 1px 2px rgba(14,21,18,.05);
+  --shadow-md:0 4px 16px -6px rgba(14,21,18,.16),0 1px 2px rgba(14,21,18,.05);
+  --shadow-lg:0 28px 64px -20px rgba(14,21,18,.30),0 2px 8px rgba(14,21,18,.08);
+  --skel:rgba(14,21,18,.06);
+  --skel-hi:rgba(14,21,18,.11);
+  --scrim:rgba(14,21,18,.34);
+  --focus:#0F4D3A;
+  --on-accent:#FFFFFF;
+  --r-sm:8px; --r-md:12px; --r-lg:18px; --r-xl:26px;
+  /* next/font supplies --font-sans / --font-mono; the stacks below are the
+     fallbacks that render before the webfonts land. */
+  --sans:var(--font-sans),ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:var(--font-mono),ui-monospace,SFMono-Regular,Menlo,monospace;
+  --rail-w:244px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-spring:cubic-bezier(.34,1.36,.64,1);
+
+  /* Data palettes — validated with the dataviz six checks.
+     Categorical (8 slots, fixed order): worst adjacent CVD ΔE 18.1 light / 15.0 dark,
+     normal-vision ΔE 19.1 / 17.7. Institution marks: CVD 16.2 / 14.3, normal 18.3 / 15.0.
+     Every mark that uses these is also directly labelled, satisfying the contrast-relief rule. */
+  --cat-dining:#bd5a84; --cat-shopping:#dca83c; --cat-transport:#049ba8; --cat-groceries:#026d36;
+  --cat-bills:#2d62af;  --cat-housing:#d77252;  --cat-subs:#7e5cb4;      --cat-health:#94ae45;
+  --ins-marine:#2863ab; --ins-mulberry:#b95c88; --ins-bronze:#da993e;
+  --ins-pine:#218041;   --ins-violet:#865eb1;   --ins-teal:#08a2af;
+  --tile-marine:#00468c; --tile-mulberry:#851b55; --tile-bronze:#754b01;
+  --tile-pine:#015122;   --tile-violet:#5e2c8a;   --tile-teal:#055b63;
+  --ins-marine-2:#203b5e; --ins-mulberry-2:#734459; --ins-bronze-2:#927859;
+  --ins-pine-2:#2f4d35;   --ins-violet-2:#534069;   --ins-teal-2:#3a6c72;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0C110F;
+    --surface:#141A17;
+    --surface-2:#1A211D;
+    --surface-3:#212925;
+    --ink:#E9EEEA;
+    --ink-2:#A2ACA6;
+    --ink-3:#75807A;
+    --line:rgba(233,238,234,.10);
+    --line-strong:rgba(233,238,234,.20);
+    --accent:#4FBF8F;
+    --accent-ink:#5FCB9C;
+    --accent-soft:rgba(79,191,143,.14);
+    --accent-glow:rgba(79,191,143,.16);
+    --debt:#DB93B2;
+    --debt-soft:rgba(219,147,178,.15);
+    --warn:#D9B45E;
+    --warn-soft:rgba(217,180,94,.15);
+    --alert:#E1806F;
+    --engrave:rgba(79,191,143,.065);
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow-md:0 4px 18px -6px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.4);
+    --shadow-lg:0 30px 70px -22px rgba(0,0,0,.8),0 2px 10px rgba(0,0,0,.5);
+    --skel:rgba(233,238,234,.06);
+    --skel-hi:rgba(233,238,234,.12);
+    --scrim:rgba(4,7,6,.62);
+    --focus:#4FBF8F;
+    --on-accent:#08110D;
+    --cat-dining:#c05d87; --cat-shopping:#be8b0f; --cat-transport:#049ba8; --cat-groceries:#007439;
+    --cat-bills:#356bb8;  --cat-housing:#d77252;  --cat-subs:#8462ba;      --cat-health:#708917;
+    --ins-marine:#316cb5; --ins-mulberry:#c0628e; --ins-bronze:#c68627;
+    --ins-pine:#318c4c;   --ins-violet:#8c64b7;   --ins-teal:#099eab;
+    --ins-marine-2:#779bc9; --ins-mulberry-2:#dba1b9; --ins-bronze-2:#e3bd8e;
+    --ins-pine-2:#8aac90;   --ins-violet-2:#b29cce;   --ins-teal-2:#91c5cb;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0C110F;
+  --surface:#141A17;
+  --surface-2:#1A211D;
+  --surface-3:#212925;
+  --ink:#E9EEEA;
+  --ink-2:#A2ACA6;
+  --ink-3:#75807A;
+  --line:rgba(233,238,234,.10);
+  --line-strong:rgba(233,238,234,.20);
+  --accent:#4FBF8F;
+  --accent-ink:#5FCB9C;
+  --accent-soft:rgba(79,191,143,.14);
+  --accent-glow:rgba(79,191,143,.16);
+  --debt:#DB93B2;
+  --debt-soft:rgba(219,147,178,.15);
+  --warn:#D9B45E;
+  --warn-soft:rgba(217,180,94,.15);
+  --alert:#E1806F;
+  --engrave:rgba(79,191,143,.065);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow-md:0 4px 18px -6px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.4);
+  --shadow-lg:0 30px 70px -22px rgba(0,0,0,.8),0 2px 10px rgba(0,0,0,.5);
+  --skel:rgba(233,238,234,.06);
+  --skel-hi:rgba(233,238,234,.12);
+  --scrim:rgba(4,7,6,.62);
+  --focus:#4FBF8F;
+  --on-accent:#08110D;
+    --cat-dining:#c05d87; --cat-shopping:#be8b0f; --cat-transport:#049ba8; --cat-groceries:#007439;
+  --cat-bills:#356bb8;  --cat-housing:#d77252;  --cat-subs:#8462ba;      --cat-health:#708917;
+  --ins-marine:#316cb5; --ins-mulberry:#c0628e; --ins-bronze:#c68627;
+  --ins-pine:#318c4c;   --ins-violet:#8c64b7;   --ins-teal:#099eab;
+    --ins-marine-2:#779bc9; --ins-mulberry-2:#dba1b9; --ins-bronze-2:#e3bd8e;
+  --ins-pine-2:#8aac90;   --ins-violet-2:#b29cce;   --ins-teal-2:#91c5cb;
+}

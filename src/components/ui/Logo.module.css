@@ -1,0 +1,39 @@
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--accent-ink);
+}
+
+.mark {
+  display: block;
+  flex: none;
+}
+
+.mark rect {
+  fill: currentColor;
+}
+
+.wordmark {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 15.5px;
+  letter-spacing: 0.1em;
+  /* cancels the trailing letter-space so the lockup stays optically centred */
+  margin-right: -0.1em;
+  color: var(--ink);
+}
+
+.hyphen {
+  color: var(--accent-ink);
+  font-weight: 400;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

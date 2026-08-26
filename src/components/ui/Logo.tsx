@@ -24,8 +24,11 @@ export function Logo({ size = 20, showWordmark = true }: { size?: number; showWo
         <span className={styles.wordmark}>
           E<span className={styles.hyphen}>-</span>PON
         </span>
-      ) : null}
-      <span className={styles.srOnly}>E-PON</span>
+      ) : (
+        // Only when there is no visible wordmark — otherwise the name is
+        // announced twice.
+        <span className={styles.srOnly}>E-PON</span>
+      )}
     </span>
   );
 }

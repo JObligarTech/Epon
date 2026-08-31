@@ -1,0 +1,33 @@
+.track {
+  display: block;
+  height: 4px;
+  max-width: 190px;
+  margin-top: 7px;
+  border-radius: 99px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.thick {
+  height: 6px;
+  max-width: none;
+  margin-top: 22px;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: var(--debt);
+  transform-origin: left;
+  animation: grow 0.8s var(--ease) both;
+}
+
+@keyframes grow {
+  from {
+    transform: scaleX(0.001);
+  }
+  to {
+    transform: none;
+  }
+}

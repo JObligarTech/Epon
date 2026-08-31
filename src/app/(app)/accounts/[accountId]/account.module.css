@@ -1,0 +1,155 @@
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: -4px 0 16px -8px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 500;
+  transition:
+    background 0.16s var(--ease),
+    color 0.16s var(--ease);
+}
+
+.back:hover {
+  background: var(--surface-2);
+  color: var(--accent-ink);
+}
+
+.back svg {
+  transform: rotate(180deg);
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 34px 34px 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(108deg, transparent 0 8px, var(--engrave) 8px 9px),
+    repeating-linear-gradient(-108deg, transparent 0 13px, var(--engrave) 13px 14px);
+  -webkit-mask-image: radial-gradient(105% 130% at 92% 0%, #000 0%, transparent 62%);
+  mask-image: radial-gradient(105% 130% at 92% 0%, #000 0%, transparent 62%);
+}
+
+.hero > * {
+  position: relative;
+}
+
+.heroTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.name {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.meta {
+  margin-top: 1px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.balances {
+  display: flex;
+  gap: 44px;
+  flex-wrap: wrap;
+  margin-top: 26px;
+}
+
+.current {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(32px, 4.4vw, 46px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.owed {
+  color: var(--debt);
+}
+
+.availableBlock {
+  padding-top: 2px;
+}
+
+.available {
+  margin-top: 11px;
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  color: var(--ink-2);
+}
+
+.explain {
+  max-width: 30ch;
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.activity {
+  margin-top: 22px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 8px;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 500;
+  transition:
+    background 0.16s var(--ease),
+    color 0.16s var(--ease);
+}
+
+.link:hover {
+  background: var(--surface-2);
+  color: var(--accent-ink);
+}
+
+.empty {
+  padding: 32px 20px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--ink-3);
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding: 24px 20px 22px;
+    border-radius: var(--r-lg);
+  }
+
+  .balances {
+    gap: 28px;
+  }
+}

@@ -1,0 +1,37 @@
+.header {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.total {
+  margin-top: 8px;
+  font-size: clamp(28px, 3.4vw, 36px);
+  font-weight: 300;
+  letter-spacing: -0.045em;
+}
+
+.subtotal {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.owed {
+  color: var(--debt);
+}
+
+.footnote {
+  max-width: 62ch;
+  margin: 16px 2px 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+.footnote b {
+  font-weight: 500;
+  color: var(--ink-2);
+}

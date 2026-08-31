@@ -13,6 +13,9 @@ import { expect, test, type Page } from "@playwright/test";
 const ROUTES = [
   { path: "/", name: "home" },
   { path: "/accounts", name: "accounts" },
+  // A credit account, so utilisation and the owed treatment are covered too.
+  { path: "/accounts/acc_horizon_card", name: "account detail (credit)" },
+  { path: "/accounts/acc_northstar_savings", name: "account detail (savings)" },
   { path: "/transactions", name: "transactions" },
   { path: "/budgeting", name: "budgeting" },
   { path: "/settings", name: "settings" },
@@ -153,4 +156,29 @@ test("the mobile More sheet reaches the sections the rail holds", async ({ page 
   await expect(sheet).toBeVisible();
   await sheet.getByRole("link", { name: /Settings/ }).click();
   await expect(page).toHaveURL(/\/settings$/);
+});
+
+test("an account row opens that account", async ({ page }) => {
+  await page.goto("/accounts");
+  await page.getByRole("link", { name: /Reserve Savings/ }).click();
+
+  await expect(page).toHaveURL(/\/accounts\/acc_northstar_savings$/);
+  await expect(page.getByRole("heading", { name: "Reserve Savings" })).toBeVisible();
+});
+
+test("an unknown account is a 404, not an empty account screen", async ({ page }) => {
+  const response = await page.goto("/accounts/acc_does_not_exist");
+  expect(response?.status()).toBe(404);
+});
+
+test("reconnect explains itself without leaving the page", async ({ page }) => {
+  await page.goto("/accounts");
+  await page.getByRole("button", { name: "Reconnect" }).click();
+
+  const sheet = page.getByRole("dialog", { name: "Reconnect" });
+  await expect(sheet).toBeVisible();
+  await expect(sheet).toContainText("Summit Financial");
+
+  await page.keyboard.press("Escape");
+  await expect(sheet).toBeHidden();
 });

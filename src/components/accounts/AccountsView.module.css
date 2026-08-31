@@ -1,0 +1,132 @@
+.folios {
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.folio + .folio {
+  border-top: 1px solid var(--line);
+}
+
+.folioHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 20px 13px;
+}
+
+.folioMeta {
+  min-width: 0;
+}
+
+.folioName {
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.reconnect {
+  margin-left: auto;
+  padding: 6px 11px;
+  font-size: 12.5px;
+  border-color: var(--warn);
+  color: var(--warn);
+}
+
+.accounts {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+}
+
+.accountRow {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 20px;
+  transition: background 0.14s var(--ease);
+}
+
+.accountRow:hover {
+  background: var(--surface-2);
+}
+
+.glyph {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface-3);
+  color: var(--ink-2);
+}
+
+.accountMeta {
+  min-width: 0;
+}
+
+.accountName {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accountDetail {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.separator {
+  margin: 0 5px;
+  opacity: 0.45;
+}
+
+.amount {
+  flex: none;
+  text-align: right;
+}
+
+.balance {
+  display: block;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.owed {
+  color: var(--debt);
+}
+
+.note {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.sheetBody {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+@media (max-width: 560px) {
+  .note {
+    white-space: normal;
+  }
+}

@@ -5,6 +5,7 @@ export { Input } from "./Input";
 export { Logo } from "./Logo";
 export { Segmented, type SegmentedOption } from "./Segmented";
 export { Section } from "./Section";
+export { Select } from "./Select";
 export { Sheet } from "./Sheet";
 export { Skeleton } from "./Skeleton";
 export { Tag } from "./Tag";

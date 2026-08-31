@@ -1,0 +1,192 @@
+.summary {
+  padding: 6px 0 22px;
+  text-align: center;
+}
+
+.glyph {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface-3);
+  color: var(--ink-2);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.glyphPending {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--line-strong);
+  color: var(--ink-3);
+}
+
+.merchant {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.amount {
+  margin-top: 8px;
+  font-size: 34px;
+  font-weight: 300;
+  letter-spacing: -0.045em;
+}
+
+.inflow {
+  color: var(--accent-ink);
+}
+
+.statusLine {
+  margin-top: 10px;
+}
+
+.pendingPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 99px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.pendingDot {
+  width: 5px;
+  height: 5px;
+  border: 1.2px solid currentColor;
+  border-radius: 99px;
+}
+
+.postedPill {
+  display: inline-flex;
+  padding: 2.5px 8px;
+  border-radius: 5px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.trace {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0;
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 17px 1fr;
+  gap: 12px;
+  padding-bottom: 16px;
+}
+
+.step:last-child {
+  padding-bottom: 0;
+}
+
+.step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 17px;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--line);
+}
+
+.stepMark {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 99px;
+  background: var(--surface);
+}
+
+.stepDone .stepMark {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.stepTitle {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.stepWaiting .stepTitle {
+  color: var(--ink-3);
+  font-weight: 400;
+}
+
+.stepNote {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.facts {
+  margin-top: 22px;
+}
+
+.fact {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-top: 1px solid var(--line);
+  font-size: 13.5px;
+}
+
+.factLabel {
+  color: var(--ink-3);
+}
+
+.factValue {
+  margin: 0;
+  text-align: right;
+  font-weight: 500;
+}
+
+.mask {
+  color: var(--ink-3);
+  font-size: 12.5px;
+}
+
+.category {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.categoryDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 3px;
+}
+
+.reference {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.footnote {
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--ink-3);
+  text-align: center;
+}

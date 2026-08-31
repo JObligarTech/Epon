@@ -59,6 +59,13 @@ const PATHS = {
   arrowDown: <path d="M8 3v9.4M4.4 8.9 8 12.5l3.6-3.6" />,
   close: <path d="M4 4l8 8M12 4l-8 8" />,
   chevron: <path d="M6 3.5 10.5 8 6 12.5" />,
+  chevronDown: <path d="M4 6.2 8 10.2l4-4" />,
+  search: (
+    <>
+      <circle cx="7.2" cy="7.2" r="4.1" />
+      <path d="M10.3 10.3 13.4 13.4" />
+    </>
+  ),
   check: <path d="M3.4 8.3 6.4 11l6.2-6.4" />,
   spark: <path d="M8 1.9 9.4 6l4.1 1.4L9.4 8.9 8 13l-1.4-4.1L2.5 7.4 6.6 6Z" />,
   bank: (

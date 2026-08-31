@@ -1,10 +1,27 @@
-import { ScreenStub } from "@/components/shell/ScreenStub";
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { connection } from "next/server";
+import { TransactionsView } from "@/components/transactions/TransactionsView";
+import { getMockDataset } from "@/lib/finance/mock-data";
 
-export default function TransactionsPage() {
+export const metadata: Metadata = { title: "Transactions — E-PON" };
+
+export default async function TransactionsPage({
+  searchParams,
+}: PageProps<"/transactions">) {
+  await connection();
+
+  const params = await searchParams;
+  const now = new Date();
+
   return (
-    <ScreenStub
-      title="A ledger you can actually read."
-      description="Grouped by day, pending told apart from posted, with search and filters by account, category and date."
-    />
+    // useSearchParams needs a boundary to suspend against during streaming.
+    <Suspense fallback={null}>
+      <TransactionsView
+        dataset={getMockDataset(now)}
+        nowIso={now.toISOString()}
+        categoryColours={params.plain !== "1"}
+      />
+    </Suspense>
   );
 }

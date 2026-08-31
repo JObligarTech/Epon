@@ -17,6 +17,8 @@ const ROUTES = [
   { path: "/accounts/acc_horizon_card", name: "account detail (credit)" },
   { path: "/accounts/acc_northstar_savings", name: "account detail (savings)" },
   { path: "/transactions", name: "transactions" },
+  { path: "/transactions?status=pending", name: "transactions (filtered)" },
+  { path: "/transactions?q=zzzz&range=all", name: "transactions (empty)" },
   { path: "/budgeting", name: "budgeting" },
   { path: "/settings", name: "settings" },
   { path: "/styleguide", name: "styleguide" },
@@ -181,4 +183,58 @@ test("reconnect explains itself without leaving the page", async ({ page }) => {
 
   await page.keyboard.press("Escape");
   await expect(sheet).toBeHidden();
+});
+
+test("filters live in the URL, so a filtered view can be linked to", async ({ page }) => {
+  await page.goto("/transactions");
+  await page.getByRole("radio", { name: "Pending" }).click();
+
+  await expect(page).toHaveURL(/status=pending/);
+  await expect(page.getByRole("region", { name: "Today" })).toBeVisible();
+
+  // And the back button walks filter changes like any other navigation.
+  await page.goBack();
+  await expect(page).not.toHaveURL(/status=pending/);
+});
+
+test("a deep link from an account arrives pre-filtered", async ({ page }) => {
+  await page.goto("/accounts/acc_horizon_card");
+  await page.getByRole("link", { name: "Open in Transactions" }).click();
+
+  await expect(page).toHaveURL(/account=acc_horizon_card/);
+  await expect(page.getByRole("combobox", { name: "Account" })).toHaveValue(
+    "acc_horizon_card",
+  );
+});
+
+test("an empty result explains itself and offers a way out", async ({ page }) => {
+  await page.goto("/transactions?q=nothingmatchesthis&range=all");
+
+  await expect(page.getByText("No transactions match")).toBeVisible();
+  await page.getByRole("button", { name: "Clear all filters" }).click();
+
+  await expect(page).toHaveURL(/\/transactions$/);
+  await expect(page.getByText("No transactions match")).toBeHidden();
+});
+
+test("a transaction opens its detail, with the pending stage shown as unfinished", async ({
+  page,
+}) => {
+  await page.goto("/transactions?status=pending");
+  await page.getByRole("button", { name: /Starbucks/ }).first().click();
+
+  const sheet = page.getByRole("dialog", { name: "Transaction" });
+  await expect(sheet).toBeVisible();
+  await expect(sheet.getByText("Held against available balance")).toBeVisible();
+  await expect(sheet.getByText("Usually 1–3 business days")).toBeVisible();
+});
+
+test("category colours can be turned off and stay off across a filter change", async ({ page }) => {
+  await page.goto("/transactions");
+  await page.getByRole("button", { name: /Category colours/ }).click();
+  await expect(page).toHaveURL(/plain=1/);
+
+  await page.getByRole("radio", { name: "Posted" }).click();
+  await expect(page).toHaveURL(/plain=1/);
+  await expect(page).toHaveURL(/status=posted/);
 });

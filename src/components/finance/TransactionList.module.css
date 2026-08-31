@@ -18,3 +18,27 @@
   height: 1px;
   background: var(--line);
 }
+
+.trigger {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-radius: 0;
+  transition: background 0.14s var(--ease);
+}
+
+.trigger:hover {
+  background: var(--surface-2);
+}
+
+/* The row fills the button, so the ring belongs on the button's own box. */
+.trigger:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+.item:hover + .item::after,
+.item:has(.trigger:hover)::after {
+  opacity: 0;
+}

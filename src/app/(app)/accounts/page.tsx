@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { connection } from "next/server";
 import { AccountsView, type InstitutionCard } from "@/components/accounts/AccountsView";
 import { groupByInstitution, totalCashMinor, totalDebtMinor } from "@/lib/finance/derive";
-import { getMockDataset } from "@/lib/finance/mock-data";
+import { isEmpty, loadDataset } from "@/lib/finance/repository";
+import { NoAccounts } from "@/components/finance/NoAccounts";
 import { formatRelativeTime } from "@/lib/dates";
 import { formatMoney } from "@/lib/money";
 import styles from "./accounts.module.css";
@@ -13,7 +14,8 @@ export default async function AccountsPage() {
   await connection();
 
   const now = new Date();
-  const dataset = getMockDataset(now);
+  const { dataset } = await loadDataset(now);
+  if (isEmpty(dataset)) return <NoAccounts />;
   const cash = totalCashMinor(dataset);
   const debt = totalDebtMinor(dataset);
 

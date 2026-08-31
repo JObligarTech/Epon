@@ -11,7 +11,11 @@
     "test:watch": "vitest",
     "typecheck": "node -e \"require('fs').rmSync('.next/types',{recursive:true,force:true})\" && next typegen && tsc --noEmit",
     "test:e2e": "playwright test",
-    "test:all": "vitest run && playwright test"
+    "test:all": "vitest run && playwright test",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "db:verify": "node scripts/verify-rls.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.5",
@@ -36,6 +40,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
     "jsdom": "^29.1.1",
+    "supabase": "^2.116.0",
     "typescript": "^5",
     "vitest": "^4.1.11"
   }

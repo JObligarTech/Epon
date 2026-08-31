@@ -16,7 +16,7 @@ import {
   findInstitution,
   sortByRecency,
 } from "@/lib/finance/derive";
-import { getMockDataset } from "@/lib/finance/mock-data";
+import { loadDataset } from "@/lib/finance/repository";
 import { formatMoney, formatMoneyRounded, sumMinor } from "@/lib/money";
 import styles from "./account.module.css";
 
@@ -26,7 +26,8 @@ export async function generateMetadata({
   params,
 }: PageProps<"/accounts/[accountId]">): Promise<Metadata> {
   const { accountId } = await params;
-  const account = findAccount(getMockDataset(new Date()), accountId);
+  const { dataset } = await loadDataset(new Date());
+  const account = findAccount(dataset, accountId);
   return { title: account ? `${account.name} — E-PON` : "Account — E-PON" };
 }
 
@@ -35,7 +36,7 @@ export default async function AccountPage({ params }: PageProps<"/accounts/[acco
 
   const { accountId } = await params;
   const now = new Date();
-  const dataset = getMockDataset(now);
+  const { dataset } = await loadDataset(now);
 
   const account = findAccount(dataset, accountId);
   // An unknown id is a 404, not an empty screen pretending to be an account.

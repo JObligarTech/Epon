@@ -19,7 +19,8 @@ import {
   totalCashMinor,
   totalDebtMinor,
 } from "@/lib/finance/derive";
-import { getMockDataset } from "@/lib/finance/mock-data";
+import { isEmpty, loadDataset } from "@/lib/finance/repository";
+import { NoAccounts } from "@/components/finance/NoAccounts";
 import { formatMoney, formatMoneyRounded, MINUS } from "@/lib/money";
 import styles from "./home.module.css";
 
@@ -35,7 +36,11 @@ export default async function HomePage() {
   // One clock for the whole render. Everything downstream is a pure function of
   // it, so the server and the client cannot disagree about what "today" means.
   const now = new Date();
-  const dataset = getMockDataset(now);
+  const { dataset } = await loadDataset(now);
+
+  // A signed-in person with nothing connected should get a starting point, not
+  // a dashboard of zeroes that looks broken.
+  if (isEmpty(dataset)) return <NoAccounts />;
 
   const cash = totalCashMinor(dataset);
   const debt = totalDebtMinor(dataset);

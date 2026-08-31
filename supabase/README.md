@@ -47,11 +47,47 @@ which a signed-in user has no profile row. The function is `security definer`
 with an empty `search_path`, so it cannot be hijacked by a schema placed ahead
 of `public`.
 
-## Verifying isolation after applying
+## Running a database locally
 
-Worth doing once, by hand, with two accounts:
+Needs Docker. On a Mac without Docker Desktop, `colima start` provides it.
 
-1. Sign in as user A, insert an item, note its id.
-2. Sign in as user B and `select * from items` — it must come back empty, not
-   error. RLS filters rows; it does not raise.
-3. As user B, try to update user A's row by id. Zero rows affected.
+```bash
+npm run db:start    # first run pulls several GB
+npm run db:verify   # proves user isolation, see below
+npm run db:stop
+```
+
+Studio is excluded from `db:start`. Under Colima it fails to mount its snippets
+directory — an sshfs `chown` restriction, nothing to do with the schema — and
+it is only the web UI. Use `psql` for a look inside:
+
+```bash
+docker exec supabase_db_epon psql -U postgres -d postgres -c '\dt public.*'
+```
+
+## Verifying isolation
+
+`npm run db:verify` creates two users and checks that neither can reach the
+other's rows. It has to pass before this schema is trusted with real data.
+
+```
+PASS  a profile row is created on sign-up
+PASS  a user can write their own rows
+PASS  a user can write an account under their own item
+PASS  another user reads none of it, and is not shown an error
+PASS  another user cannot change it
+PASS  another user cannot delete it
+PASS  a transaction cannot be attached to someone else's account
+PASS  a user cannot write a row carrying another user's id
+PASS  the owner still sees their own rows
+```
+
+Two of those are the ones worth understanding:
+
+**"reads none of it, and is not shown an error"** — RLS filters rows, it does
+not raise. A blocked read returning empty is correct; a blocked read returning
+an error means something other than RLS is failing.
+
+**"cannot write a row carrying another user's id"** — this is what `with check`
+buys. Without it a policy passes the read test and still lets a user insert
+rows belonging to someone else.

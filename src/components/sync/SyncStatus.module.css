@@ -1,0 +1,78 @@
+.sync {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 11px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12.5px;
+  transition:
+    border-color 0.18s var(--ease),
+    color 0.18s var(--ease),
+    background 0.3s var(--ease);
+}
+
+.sync:hover:not(:disabled) {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.sync:disabled {
+  cursor: default;
+}
+
+.dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  background: var(--accent);
+}
+
+.busy .dot {
+  animation: pulse 1.05s infinite var(--ease);
+}
+
+.label {
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .sync {
+    padding: 8px;
+  }
+}
+
+.spin {
+  display: flex;
+  animation: spin 0.85s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.7);
+  }
+}

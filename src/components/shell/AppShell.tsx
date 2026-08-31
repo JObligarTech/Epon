@@ -14,9 +14,12 @@ import styles from "./AppShell.module.css";
 export function AppShell({
   children,
   plaidEnabled,
+  syncLabel,
 }: {
   children: ReactNode;
   plaidEnabled: boolean;
+  /** Null when there is nothing to sync — sample data, or no connections. */
+  syncLabel: string | null;
 }) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [connectOpen, setConnectOpen] = useState(false);
@@ -40,7 +43,7 @@ export function AppShell({
       <div className={styles.shell} inert={sheetOpen ? true : undefined}>
         <NavRail />
         <div className={styles.main}>
-          <TopBar onConnect={() => setConnectOpen(true)} />
+          <TopBar onConnect={() => setConnectOpen(true)} syncLabel={syncLabel} />
           <main id="main" className={styles.page} tabIndex={-1}>
             {children}
           </main>

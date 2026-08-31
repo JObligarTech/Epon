@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { Icon } from "@/components/icons";
+import { SyncStatus } from "@/components/sync/SyncStatus";
 import { Button, Logo } from "@/components/ui";
 import styles from "./TopBar.module.css";
 
@@ -13,7 +14,13 @@ const TITLES: Record<string, string> = {
   "/settings": "Settings",
 };
 
-export function TopBar({ onConnect }: { onConnect: () => void }) {
+export function TopBar({
+  onConnect,
+  syncLabel,
+}: {
+  onConnect: () => void;
+  syncLabel: string | null;
+}) {
   const pathname = usePathname();
   const title = TITLES[pathname] ?? "E-PON";
 
@@ -27,6 +34,7 @@ export function TopBar({ onConnect }: { onConnect: () => void }) {
       <h1 className={styles.title}>{title}</h1>
 
       <div className={styles.actions}>
+        <SyncStatus label={syncLabel} />
         <Button variant="primary" className={styles.connect} onClick={onConnect}>
           <Icon name="plus" size={14} strokeWidth={1.7} />
           <span className={styles.connectLabel}>Connect</span>

@@ -114,7 +114,7 @@ describe("TabBar", () => {
 describe("AppShell", () => {
   const renderShell = () =>
     render(
-      <AppShell plaidEnabled={false}>
+      <AppShell plaidEnabled={false} syncLabel={null}>
         <h2>Overview</h2>
       </AppShell>,
     );

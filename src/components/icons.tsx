@@ -55,6 +55,12 @@ const PATHS = {
     </>
   ),
   plus: <path d="M8 3.2v9.6M3.2 8h9.6" />,
+  refresh: (
+    <>
+      <path d="M13.5 8a5.5 5.5 0 1 1-1.7-4" />
+      <path d="M13.6 2.2v3.6H10" />
+    </>
+  ),
   warn: (
     <>
       <path d="M8 5.6v3.4M8 11.3v.1" />

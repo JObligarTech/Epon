@@ -55,6 +55,8 @@ const PATHS = {
     </>
   ),
   plus: <path d="M8 3.2v9.6M3.2 8h9.6" />,
+  arrowUp: <path d="M8 13V3.6M4.4 7.1 8 3.5l3.6 3.6" />,
+  arrowDown: <path d="M8 3v9.4M4.4 8.9 8 12.5l3.6-3.6" />,
   close: <path d="M4 4l8 8M12 4l-8 8" />,
   chevron: <path d="M6 3.5 10.5 8 6 12.5" />,
   check: <path d="M3.4 8.3 6.4 11l6.2-6.4" />,

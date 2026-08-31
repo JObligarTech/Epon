@@ -1,8 +1,10 @@
 export { Button } from "./Button";
 export { Chip } from "./Chip";
+export { CountUp } from "./CountUp";
 export { Input } from "./Input";
 export { Logo } from "./Logo";
 export { Segmented, type SegmentedOption } from "./Segmented";
+export { Section } from "./Section";
 export { Sheet } from "./Sheet";
 export { Skeleton } from "./Skeleton";
 export { Tag } from "./Tag";

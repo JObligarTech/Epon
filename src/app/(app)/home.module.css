@@ -1,0 +1,259 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 34px 34px 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition:
+    background 0.4s var(--ease),
+    border-color 0.4s var(--ease);
+}
+
+/* A faint engraved texture, masked to one corner — a nod to the intaglio line
+   work on banknotes, at an opacity you notice only if you look. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(108deg, transparent 0 8px, var(--engrave) 8px 9px),
+    repeating-linear-gradient(-108deg, transparent 0 13px, var(--engrave) 13px 14px);
+  -webkit-mask-image: radial-gradient(105% 130% at 92% 0%, #000 0%, transparent 62%);
+  mask-image: radial-gradient(105% 130% at 92% 0%, #000 0%, transparent 62%);
+}
+
+.hero > * {
+  position: relative;
+}
+
+.heroTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.netPosition {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(38px, 5.6vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 12px;
+  padding: 4px 9px;
+  border-radius: 99px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.deltaDown {
+  background: var(--debt-soft);
+  color: var(--debt);
+}
+
+.heroSide {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  min-width: 148px;
+  text-align: right;
+}
+
+.heroSideLabel {
+  display: block;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.heroSideValue {
+  display: block;
+  margin-top: 4px;
+  font-size: 19px;
+}
+
+.owed {
+  color: var(--debt);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 336px;
+  gap: 22px;
+  align-items: start;
+  margin-top: 22px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+
+.reserved {
+  padding: 20px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, var(--accent-soft), transparent 90%);
+}
+
+.reservedHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reservedEyebrow {
+  color: var(--accent-ink);
+}
+
+.reservedTag {
+  margin-left: auto;
+}
+
+.reservedGhost {
+  margin: 9px 0 4px;
+  font-family: var(--mono);
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  opacity: 0.17;
+  user-select: none;
+}
+
+.reservedBody {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.inFlightNote {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.inFlightNote .num {
+  color: var(--ink);
+}
+
+.accountRow {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 11px 20px;
+  text-align: left;
+}
+
+.accountName {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accountDetail {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.accountAmount {
+  text-align: right;
+}
+
+.accountBalance {
+  display: block;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.accountNote {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+.plainList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.plainList > li + li {
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 1080px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding: 24px 20px 22px;
+    border-radius: var(--r-lg);
+  }
+}
+
+@media (max-width: 700px) {
+  .heroSide {
+    flex-direction: row;
+    gap: 34px;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    text-align: left;
+  }
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 500;
+  transition:
+    background 0.16s var(--ease),
+    color 0.16s var(--ease);
+}
+
+.link:hover {
+  background: var(--surface-2);
+  color: var(--accent-ink);
+}
+
+.padded {
+  padding: 0 20px 14px;
+}
+
+a.accountRow:hover {
+  background: var(--surface-2);
+}

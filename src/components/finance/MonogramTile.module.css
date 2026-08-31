@@ -1,0 +1,10 @@
+.tile {
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  /* White reads on every tile step; they are all deep by construction. */
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}

@@ -30,6 +30,11 @@ export async function createLinkToken(): Promise<{ token: string } | { error: st
       products: [Products.Transactions],
       country_codes: [CountryCode.Us],
       language: "en",
+      // Plaid cannot reach localhost, so this is only set where the app is
+      // deployed. Without it there are no webhooks and sync is manual only.
+      ...(process.env.PLAID_WEBHOOK_URL
+        ? { webhook: process.env.PLAID_WEBHOOK_URL }
+        : {}),
     });
 
     return { token: response.data.link_token };

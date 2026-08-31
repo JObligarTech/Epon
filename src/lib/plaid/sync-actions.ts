@@ -8,6 +8,9 @@ import { createClient } from "@/lib/supabase/server";
 import { balanceToMinor, plaidClient } from "./client";
 import { collapsePages } from "./sync";
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { ItemRow } from "@/lib/supabase/database.types";
+
 export type SyncResult =
   | { ok: true; added: number; updated: number; removed: number; syncedAt: string }
   | { ok: false; error: string };
@@ -33,7 +36,6 @@ export async function syncTransactions(): Promise<SyncResult> {
   }
 
   const supabase = await createClient();
-  const client = plaidClient();
 
   const { data: items, error: itemsError } = await supabase
     .from("items")
@@ -51,8 +53,40 @@ export async function syncTransactions(): Promise<SyncResult> {
   let removed = 0;
 
   for (const item of items) {
+    const counts = await syncItem(supabase, item);
+    added += counts.added;
+    updated += counts.updated;
+    removed += counts.removed;
+  }
+
+  revalidatePath("/", "layout");
+  return { ok: true, added, updated, removed, syncedAt: new Date().toISOString() };
+}
+
+/**
+ * One connection's worth of syncing.
+ *
+ * Takes the client rather than creating one, so a webhook can pass a
+ * service-role client — it arrives with no user session to act on behalf of —
+ * while the refresh button passes the user's own. Both then run identical code
+ * rather than a webhook path that drifts from the interactive one.
+ */
+export async function syncItem(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  supabase: SupabaseClient<any, any, any>,
+  item: ItemRow,
+): Promise<{ added: number; updated: number; removed: number }> {
+  const client = plaidClient();
+  const user = { id: item.user_id };
+  let added = 0;
+  let updated = 0;
+  let removed = 0;
+
+  {
     // A sample connection has no Plaid item behind it to sync.
-    if (!item.access_token_encrypted?.startsWith("v1:")) continue;
+    if (!item.access_token_encrypted?.startsWith("v1:")) {
+      return { added: 0, updated: 0, removed: 0 };
+    }
 
     try {
       const accessToken = decryptToken(item.access_token_encrypted);
@@ -122,8 +156,9 @@ export async function syncTransactions(): Promise<SyncResult> {
 
         if (error) {
           console.error("Could not write transactions", error);
-          // Leave the cursor where it was, so nothing is skipped next time.
-          continue;
+          // Leave the cursor where it was, so the next sync asks for this same
+          // window again rather than advancing past rows that were not stored.
+          return { added: 0, updated: 0, removed: 0 };
         }
       }
 
@@ -180,6 +215,5 @@ export async function syncTransactions(): Promise<SyncResult> {
     }
   }
 
-  revalidatePath("/", "layout");
-  return { ok: true, added, updated, removed, syncedAt: new Date().toISOString() };
+  return { added, updated, removed };
 }

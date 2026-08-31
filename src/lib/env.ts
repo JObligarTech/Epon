@@ -57,3 +57,28 @@ export function hasSupabaseConfig(): boolean {
     process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   );
 }
+
+/**
+ * Plaid credentials. Server-only by construction — the client id and secret
+ * together can read every connected account, so they are never prefixed
+ * NEXT_PUBLIC_ and never reach a browser bundle. The browser only ever
+ * receives a short-lived link token.
+ */
+export function plaidEnv(): { clientId: string; secret: string; environment: "sandbox" | "production" } {
+  if (typeof window !== "undefined") {
+    throw new Error("Plaid credentials must never be read in the browser.");
+  }
+
+  const environment = process.env.PLAID_ENV === "production" ? "production" : "sandbox";
+
+  return {
+    clientId: required("PLAID_CLIENT_ID", process.env.PLAID_CLIENT_ID),
+    secret: required("PLAID_SECRET", process.env.PLAID_SECRET),
+    environment,
+  };
+}
+
+/** Whether bank connections are available at all. */
+export function hasPlaidConfig(): boolean {
+  return Boolean(process.env.PLAID_CLIENT_ID && process.env.PLAID_SECRET);
+}

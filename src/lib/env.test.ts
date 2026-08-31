@@ -8,7 +8,9 @@
  */
 import { afterEach, describe, expect, it } from "vitest";
 import {
+  hasPlaidConfig,
   hasSupabaseConfig,
+  plaidEnv,
   MissingEnvError,
   supabasePublicEnv,
   supabaseServiceRoleKey,
@@ -86,5 +88,44 @@ describe("supabaseServiceRoleKey", () => {
     } finally {
       if (!had) delete globalWithWindow.window;
     }
+  });
+});
+
+describe("plaidEnv", () => {
+  it("defaults to sandbox unless production is asked for explicitly", () => {
+    process.env.PLAID_CLIENT_ID = "id";
+    process.env.PLAID_SECRET = "secret";
+
+    delete process.env.PLAID_ENV;
+    expect(plaidEnv().environment).toBe("sandbox");
+
+    process.env.PLAID_ENV = "development";
+    expect(plaidEnv().environment).toBe("sandbox");
+
+    process.env.PLAID_ENV = "production";
+    expect(plaidEnv().environment).toBe("production");
+  });
+
+  it("refuses to be read in a browser", () => {
+    // The client id and secret together read every connected bank account.
+    process.env.PLAID_CLIENT_ID = "id";
+    process.env.PLAID_SECRET = "secret";
+
+    const globalWithWindow = globalThis as { window?: unknown };
+    globalWithWindow.window = {};
+    try {
+      expect(() => plaidEnv()).toThrow(/never be read in the browser/);
+    } finally {
+      delete globalWithWindow.window;
+    }
+  });
+
+  it("reports configuration without throwing", () => {
+    delete process.env.PLAID_CLIENT_ID;
+    expect(hasPlaidConfig()).toBe(false);
+
+    process.env.PLAID_CLIENT_ID = "id";
+    process.env.PLAID_SECRET = "secret";
+    expect(hasPlaidConfig()).toBe(true);
   });
 });

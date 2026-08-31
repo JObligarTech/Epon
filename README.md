@@ -41,6 +41,12 @@ Preview and Development.
 `SUPABASE_SERVICE_ROLE_KEY` never does — it bypasses row level security and is
 reserved for webhook handlers, which arrive with no user session.
 
+## Database
+
+`supabase/migrations` holds the schema, and `supabase/README.md` explains how to
+apply it and what it guarantees. Every table carries a user id and is fenced by
+row level security; no query path relies on the application to scope rows.
+
 ## Design reference
 
 `design/prototype.html` is the approved interactive design prototype — a single

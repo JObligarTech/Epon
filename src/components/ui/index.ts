@@ -1,4 +1,5 @@
 export { Button } from "./Button";
+export { ButtonLink } from "./ButtonLink";
 export { Chip } from "./Chip";
 export { CountUp } from "./CountUp";
 export { Input } from "./Input";

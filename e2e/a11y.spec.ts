@@ -171,8 +171,21 @@ test("an account row opens that account", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Reserve Savings" })).toBeVisible();
 });
 
-test("an unknown account is a 404, not an empty account screen", async ({ page }) => {
-  const response = await page.goto("/accounts/acc_does_not_exist");
+test("an unknown account is refused, not shown as an empty account", async ({ page }) => {
+  await page.goto("/accounts/acc_does_not_exist");
+
+  await expect(page.getByRole("heading", { name: "We could not find that" })).toBeVisible();
+  // Never the account UI with blanks in it.
+  await expect(page.getByText("Current balance")).toBeHidden();
+});
+
+test("an unknown URL is a real 404", async ({ page }) => {
+  // Routes that do not exist at all are refused before any layout is chosen,
+  // so these carry a true 404. An unknown id *inside* a real route renders the
+  // in-shell not-found instead and returns 200 — a deliberate trade, since
+  // keeping the navigation is worth more here than the status code on a page
+  // no crawler will ever see.
+  const response = await page.goto("/this-route-does-not-exist");
   expect(response?.status()).toBe(404);
 });
 
@@ -272,3 +285,28 @@ test("the app still works with no Supabase configured, rather than locking every
   await expect(page).toHaveURL(/\/$/);
   await expect(page.getByText("Net position")).toBeVisible();
 });
+
+test("an unknown URL gets a real page, not a stack trace", async ({ page }) => {
+  const response = await page.goto("/this-does-not-exist");
+  expect(response?.status()).toBe(404);
+
+  await expect(page.getByRole("heading", { name: "We could not find that" })).toBeVisible();
+  await page.getByRole("link", { name: "Back to overview" }).click();
+  await expect(page).toHaveURL(/\/$/);
+});
+
+test("an unknown account gets the in-app not-found, keeping the navigation", async ({ page }) => {
+  await page.goto("/accounts/acc_does_not_exist");
+
+  await expect(page.getByRole("heading", { name: "We could not find that" })).toBeVisible();
+  // Still inside the shell, so there is a way out that is not the back button.
+  await expect(page.getByRole("navigation", { name: "Main" })).toBeVisible();
+});
+
+for (const theme of THEMES) {
+  test(`the not-found page has no accessibility violations in ${theme}`, async ({ page }) => {
+    await gotoWithTheme(page, "/accounts/acc_does_not_exist", theme);
+    const results = await audit(page).analyze();
+    expect(results.violations.map((v) => `${v.id}: ${v.help}`).join("\n")).toBe("");
+  });
+}

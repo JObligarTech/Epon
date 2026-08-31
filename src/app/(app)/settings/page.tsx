@@ -1,39 +1,49 @@
-"use client";
-
-import { useTheme } from "@/components/theme/useTheme";
-import { Segmented } from "@/components/ui";
-import { THEMES, type Theme } from "@/lib/theme";
+import type { Metadata } from "next";
+import { signOut } from "@/app/(auth)/actions";
+import { AppearanceSection } from "@/components/settings/AppearanceSection";
+import { Button } from "@/components/ui";
+import { getCurrentUser, isAuthEnabled } from "@/lib/auth";
 import styles from "./settings.module.css";
 
-export default function SettingsPage() {
-  const { theme, setTheme } = useTheme();
+export const metadata: Metadata = { title: "Settings — E-PON" };
+
+export default async function SettingsPage() {
+  const user = await getCurrentUser();
+  const authEnabled = isAuthEnabled();
 
   return (
     <div className={styles.page}>
-      <section className={styles.section} aria-labelledby="appearance-heading">
+      <section className={styles.section} aria-labelledby="profile-heading">
         <div className={styles.head}>
-          <h2 id="appearance-heading" className={styles.title}>
-            Appearance
+          <h2 id="profile-heading" className={styles.title}>
+            Profile
           </h2>
         </div>
         <div className={styles.body}>
-          <div className={styles.row}>
-            <span className={styles.label}>Theme</span>
-            <Segmented
-              label="Theme"
-              value={theme}
-              onChange={(next) => setTheme(next as Theme)}
-              options={THEMES.map((value) => ({
-                value,
-                label: value[0].toUpperCase() + value.slice(1),
-              }))}
-            />
-          </div>
-          <p className={styles.note}>
-            Dark mode is its own palette, not an inversion. System follows your device.
-          </p>
+          {user ? (
+            <>
+              <div className={styles.row}>
+                <span className={styles.label}>Name</span>
+                <span className={styles.value}>
+                  {(user.user_metadata?.full_name as string | undefined) ?? "Not set"}
+                </span>
+              </div>
+              <div className={styles.row}>
+                <span className={styles.label}>Email</span>
+                <span className={styles.value}>{user.email}</span>
+              </div>
+            </>
+          ) : (
+            <p className={styles.note}>
+              {authEnabled
+                ? "You are not signed in."
+                : "Accounts arrive once Supabase is connected. Until then E-PON runs on sample data so the product can be used and reviewed."}
+            </p>
+          )}
         </div>
       </section>
+
+      <AppearanceSection />
 
       <section className={styles.section} aria-labelledby="rest-heading">
         <div className={styles.head}>
@@ -43,11 +53,19 @@ export default function SettingsPage() {
         </div>
         <div className={styles.body}>
           <p className={styles.note}>
-            Profile, security, connected institutions and sync settings arrive once accounts and
-            bank connections are real.
+            Security, connected institutions and synchronisation settings arrive with the Plaid
+            integration.
           </p>
         </div>
       </section>
+
+      {user ? (
+        <form action={signOut} className={styles.signOut}>
+          <Button type="submit" variant="quiet">
+            Sign out
+          </Button>
+        </form>
+      ) : null}
     </div>
   );
 }

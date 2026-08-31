@@ -22,6 +22,9 @@ const ROUTES = [
   { path: "/budgeting", name: "budgeting" },
   { path: "/settings", name: "settings" },
   { path: "/styleguide", name: "styleguide" },
+  { path: "/sign-in", name: "sign in" },
+  { path: "/create-account", name: "create account" },
+  { path: "/reset-password", name: "reset password" },
 ];
 
 const THEMES = ["light", "dark"] as const;
@@ -237,4 +240,35 @@ test("category colours can be turned off and stay off across a filter change", a
   await page.getByRole("radio", { name: "Posted" }).click();
   await expect(page).toHaveURL(/plain=1/);
   await expect(page).toHaveURL(/status=posted/);
+});
+
+test("the auth screens link to each other in both directions", async ({ page }) => {
+  await page.goto("/sign-in");
+
+  await page.getByRole("link", { name: "Create an account" }).click();
+  await expect(page).toHaveURL(/\/create-account$/);
+
+  await page.getByRole("link", { name: "Sign in" }).click();
+  await expect(page).toHaveURL(/\/sign-in$/);
+
+  await page.getByRole("link", { name: "Forgot password?" }).click();
+  await expect(page).toHaveURL(/\/reset-password$/);
+});
+
+test("every auth field has a real label, not just a placeholder", async ({ page }) => {
+  await page.goto("/create-account");
+
+  // A placeholder disappears the moment you type; a label does not.
+  await expect(page.getByLabel("Full name")).toBeVisible();
+  await expect(page.getByLabel("Email")).toBeVisible();
+  await expect(page.getByLabel("Password")).toBeVisible();
+});
+
+test("the app still works with no Supabase configured, rather than locking everyone out", async ({
+  page,
+}) => {
+  // Nothing is configured yet, so the proxy must not redirect anyone.
+  await page.goto("/");
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.getByText("Net position")).toBeVisible();
 });

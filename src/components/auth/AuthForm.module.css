@@ -1,0 +1,86 @@
+.heading {
+  font-size: 27px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.lede {
+  margin: 6px 0 28px;
+  font-size: 14.5px;
+  color: var(--ink-2);
+}
+
+.field {
+  margin-bottom: 14px;
+}
+
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+
+.label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.link {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--accent-ink);
+}
+
+.link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.submit {
+  margin-top: 8px;
+}
+
+.message {
+  margin-bottom: 16px;
+  padding: 11px 13px;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.error {
+  background: color-mix(in srgb, var(--alert) 10%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--alert) 30%, var(--surface));
+  color: var(--alert);
+}
+
+.notice {
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--surface));
+  color: var(--accent-ink);
+}
+
+.note {
+  margin-top: 26px;
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.note strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.swap {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}

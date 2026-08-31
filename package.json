@@ -21,8 +21,10 @@
     "@supabase/ssr": "^0.12.5",
     "@supabase/supabase-js": "^2.112.4",
     "next": "16.3.3",
+    "plaid": "^46.0.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "react-plaid-link": "^5.0.0",
     "server-only": "^0.0.1"
   },
   "devDependencies": {

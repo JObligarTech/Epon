@@ -2,8 +2,22 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const mocks = vi.hoisted(() => ({ pathname: "/" }));
-vi.mock("next/navigation", () => ({ usePathname: () => mocks.pathname }));
+const mocks = vi.hoisted(() => ({ pathname: "/", refresh: vi.fn() }));
+
+vi.mock("next/navigation", () => ({
+  usePathname: () => mocks.pathname,
+  useRouter: () => ({ refresh: mocks.refresh, replace: vi.fn(), push: vi.fn() }),
+}));
+
+// The connect sheet reaches Plaid, which has no place in a component test.
+vi.mock("@/lib/plaid/connect-actions", () => ({
+  createLinkToken: vi.fn(async () => ({ token: "link-sandbox-test" })),
+  exchangePublicToken: vi.fn(async () => ({
+    ok: true,
+    institutionName: "Northstar Bank",
+    accountCount: 2,
+  })),
+}));
 
 import { AppShell } from "./AppShell";
 import { NavRail } from "./NavRail";
@@ -98,7 +112,12 @@ describe("TabBar", () => {
 });
 
 describe("AppShell", () => {
-  const renderShell = () => render(<AppShell><h2>Overview</h2></AppShell>);
+  const renderShell = () =>
+    render(
+      <AppShell plaidEnabled={false}>
+        <h2>Overview</h2>
+      </AppShell>,
+    );
 
   it("exposes a skip link and exactly one main landmark", () => {
     renderShell();

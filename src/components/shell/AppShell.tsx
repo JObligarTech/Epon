@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { Icon } from "@/components/icons";
+import { ConnectFlow } from "@/components/connect/ConnectFlow";
 import { Sheet, Tag } from "@/components/ui";
 import { PLANNED_SECTIONS, PRIMARY_NAV, SETTINGS_NAV } from "@/lib/nav";
 import { NavRail } from "./NavRail";
@@ -10,7 +11,13 @@ import { TabBar } from "./TabBar";
 import { TopBar } from "./TopBar";
 import styles from "./AppShell.module.css";
 
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({
+  children,
+  plaidEnabled,
+}: {
+  children: ReactNode;
+  plaidEnabled: boolean;
+}) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [connectOpen, setConnectOpen] = useState(false);
 
@@ -83,15 +90,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         onClose={() => setConnectOpen(false)}
         title="Connect an account"
       >
-        <div className={styles.connectIntro}>
-          <span className={styles.connectGlyph}>
-            <Icon name="bank" size={22} strokeWidth={1.6} />
-          </span>
-          <p>
-            Linking banks and cards arrives with the Plaid integration. E-PON will read balances
-            and transactions only — it will never be able to move money.
-          </p>
-        </div>
+        <ConnectFlow enabled={plaidEnabled} />
       </Sheet>
     </>
   );

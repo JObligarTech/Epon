@@ -1,0 +1,65 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.body p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.glyph {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.glyphDone {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.title {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 4px 0 8px;
+  list-style: none;
+  padding: 0;
+}
+
+.points li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.tick {
+  flex: none;
+  margin-top: 1px;
+  color: var(--accent-ink);
+}
+
+.error {
+  padding: 11px 13px;
+  border: 1px solid color-mix(in srgb, var(--alert) 30%, var(--surface));
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--alert) 10%, var(--surface));
+  color: var(--alert);
+  font-size: 13px;
+}

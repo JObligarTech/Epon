@@ -1,5 +1,6 @@
 import { CATEGORIES, type Category } from "./categories";
 import { hueForIndex } from "./hues";
+import { SAMPLE_PREFIX } from "./sample";
 import type { Account, Institution, Transaction } from "./types";
 import type { AccountRow, ItemRow, TransactionRow } from "@/lib/supabase/database.types";
 
@@ -21,6 +22,7 @@ export function institutionFromRow(row: ItemRow): Institution {
     // A connection that has never synced is shown as of its creation, rather
     // than rendering "never" into a relative-time formatter.
     lastSyncedAt: row.last_synced_at ?? row.created_at,
+    isSample: row.plaid_item_id.startsWith(SAMPLE_PREFIX),
   };
 }
 

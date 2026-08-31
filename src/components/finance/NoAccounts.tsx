@@ -1,4 +1,6 @@
 import { Icon } from "@/components/icons";
+import { Button } from "@/components/ui";
+import { loadSampleData } from "@/lib/finance/seed-actions";
 import styles from "./NoAccounts.module.css";
 
 /**
@@ -8,9 +10,11 @@ import styles from "./NoAccounts.module.css";
 export function NoAccounts({
   title = "Nothing connected yet",
   body = "Link a bank or card and E-PON will pull in your balances and the last two years of transactions.",
+  offerSample = true,
 }: {
   title?: string;
   body?: string;
+  offerSample?: boolean;
 }) {
   return (
     <div className={styles.empty}>
@@ -19,8 +23,16 @@ export function NoAccounts({
       </span>
       <h2 className={styles.title}>{title}</h2>
       <p className={styles.body}>{body}</p>
+
+      {offerSample ? (
+        <form action={loadSampleData} className={styles.actions}>
+          <Button type="submit">Load sample data instead</Button>
+        </form>
+      ) : null}
+
       <p className={styles.note}>
-        Use <b>Connect</b> at the top of the page. E-PON only ever reads — it cannot move money.
+        Use <b>Connect</b> at the top of the page for a real bank. E-PON only ever reads — it
+        cannot move money.
       </p>
     </div>
   );

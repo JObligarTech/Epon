@@ -14,7 +14,7 @@ import type { Account, Dataset, Institution, Transaction } from "./types";
  * down, exactly as it will pass real rows later.
  */
 
-const INSTITUTIONS: readonly (Omit<Institution, "lastSyncedAt"> & {
+const INSTITUTIONS: readonly (Omit<Institution, "lastSyncedAt" | "isSample"> & {
   syncedMinutesAgo: number;
 })[] = [
   { id: "ins_northstar", name: "Northstar Bank", hue: "marine", status: "healthy", syncedMinutesAgo: 12 },
@@ -138,6 +138,7 @@ export function getMockDataset(now: Date): Dataset {
     institutions: INSTITUTIONS.map(({ syncedMinutesAgo, ...institution }) => ({
       ...institution,
       lastSyncedAt: new Date(now.getTime() - syncedMinutesAgo * 60_000).toISOString(),
+      isSample: true,
     })),
     accounts: [...ACCOUNTS],
     transactions: TRANSACTIONS.map((seed, index) => seedToTransaction(seed, index, now)),

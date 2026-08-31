@@ -28,6 +28,11 @@ export type Institution = {
   status: ConnectionStatus;
   /** ISO 8601. When Plaid last gave us data for this connection. */
   lastSyncedAt: string;
+  /**
+   * Loaded from the sample set rather than connected to a real bank. Surfaced
+   * in the UI so invented balances can never be mistaken for real ones.
+   */
+  isSample: boolean;
 };
 
 export type AccountType = "checking" | "savings" | "credit";

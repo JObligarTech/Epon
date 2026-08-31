@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Icon } from "@/components/icons";
 import { ConnectionStatus } from "@/components/finance/ConnectionStatus";
 import { MonogramTile } from "@/components/finance/MonogramTile";
-import { Button, Sheet } from "@/components/ui";
+import { Button, Sheet, Tag } from "@/components/ui";
 import { formatMoney, formatMoneyRounded } from "@/lib/money";
 import type { Account, Institution } from "@/lib/finance/types";
 import { accountTypeLabel } from "./accountLabels";
@@ -30,7 +30,14 @@ export function AccountsView({ cards }: { cards: InstitutionCard[] }) {
             <header className={styles.folioHead}>
               <MonogramTile name={institution.name} hue={institution.hue} />
               <div className={styles.folioMeta}>
-                <h2 className={styles.folioName}>{institution.name}</h2>
+                <h2 className={styles.folioName}>
+                  {institution.name}
+                  {institution.isSample ? (
+                    <span className={styles.sampleTag}>
+                      <Tag>Sample</Tag>
+                    </span>
+                  ) : null}
+                </h2>
                 <ConnectionStatus status={institution.status} syncLabel={syncLabel} />
               </div>
               {institution.status === "reconnect_required" ? (

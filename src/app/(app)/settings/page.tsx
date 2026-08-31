@@ -3,6 +3,8 @@ import { signOut } from "@/app/(auth)/actions";
 import { AppearanceSection } from "@/components/settings/AppearanceSection";
 import { Button } from "@/components/ui";
 import { getCurrentUser, isAuthEnabled } from "@/lib/auth";
+import { loadDataset } from "@/lib/finance/repository";
+import { removeSampleData } from "@/lib/finance/seed-actions";
 import styles from "./settings.module.css";
 
 export const metadata: Metadata = { title: "Settings — E-PON" };
@@ -10,6 +12,10 @@ export const metadata: Metadata = { title: "Settings — E-PON" };
 export default async function SettingsPage() {
   const user = await getCurrentUser();
   const authEnabled = isAuthEnabled();
+
+  const { dataset, source } = await loadDataset(new Date());
+  const hasSampleData =
+    source === "database" && dataset.institutions.some((institution) => institution.isSample);
 
   return (
     <div className={styles.page}>
@@ -44,6 +50,26 @@ export default async function SettingsPage() {
       </section>
 
       <AppearanceSection />
+
+      {hasSampleData ? (
+        <section className={styles.section} aria-labelledby="sample-heading">
+          <div className={styles.head}>
+            <h2 id="sample-heading" className={styles.title}>
+              Sample data
+            </h2>
+          </div>
+          <div className={styles.body}>
+            <p className={styles.note}>
+              Your account is holding the sample set — invented institutions, balances and
+              transactions, so the product can be used before a real bank is connected. Removing
+              it leaves anything you have genuinely connected untouched.
+            </p>
+            <form action={removeSampleData}>
+              <Button type="submit">Remove sample data</Button>
+            </form>
+          </div>
+        </section>
+      ) : null}
 
       <section className={styles.section} aria-labelledby="rest-heading">
         <div className={styles.head}>

@@ -20,10 +20,26 @@ to save up.
 
 ```bash
 npm install
+cp .env.example .env.local   # then fill in the values
 npm run dev
 ```
 
 Then open http://localhost:3000.
+
+The app runs on mock data until the database is wired up, so it starts without
+any environment variables. Supabase values are read lazily and validated at the
+point of use: a missing variable breaks the feature that needs it, with a
+message naming the variable, rather than failing the build.
+
+## Environment variables
+
+See `.env.example` for the full list and where each one comes from. Set them in
+Vercel under Project → Settings → Environment Variables, for Production,
+Preview and Development.
+
+`NEXT_PUBLIC_SUPABASE_ANON_KEY` reaches the browser by design.
+`SUPABASE_SERVICE_ROLE_KEY` never does — it bypasses row level security and is
+reserved for webhook handlers, which arrive with no user session.
 
 ## Design reference
 
@@ -49,6 +65,19 @@ Shipped in small deployable commits, six milestones:
 6. **M5 — Ship V1.** Settings, loading and error states, hardening.
 
 Every commit deploys. Some change nothing visible — that is expected.
+
+## Testing
+
+```bash
+npm test          # unit and component tests, with axe assertions
+npm run test:e2e  # real-browser accessibility audits, both themes
+npm run typecheck # generates route types first, then tsc
+npm run lint
+```
+
+Accessibility is checked in two places because one is not enough. jsdom does no
+layout or painting, so axe skips colour contrast there entirely; those rules
+only run in the Playwright suite, against a production build, in both themes.
 
 ## Conventions
 

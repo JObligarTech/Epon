@@ -13,13 +13,20 @@ class ResizeObserverStub {
 }
 globalThis.ResizeObserver ??= ResizeObserverStub as unknown as typeof ResizeObserver;
 
+
 expect.extend({ toBeAccessible });
 
+// Files that opt into the node environment share this setup but have no DOM.
+const hasDom = typeof document !== "undefined";
+
 beforeEach(() => {
+  if (!hasDom) return;
   // Each test starts from the default un-stamped theme state — the one most
   // people actually see — unless it opts into a stamp.
   document.documentElement.removeAttribute("data-theme");
   window.localStorage.clear();
 });
 
-afterEach(cleanup);
+afterEach(() => {
+  if (hasDom) cleanup();
+});
